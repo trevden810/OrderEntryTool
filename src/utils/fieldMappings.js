@@ -38,9 +38,7 @@ export function mapToFileMakerFields(extracted) {
     // Core job fields
     job_status: APP_DEFAULTS.jobStatus,
     job_type: extracted.jobType || 'Delivery',
-    job_date: today,
-    date_received: today,
-    due_date: convertDateToISO(extracted.dueDate) || today,
+    // Dates are auto-entered by FileMaker; omit from create payload
     
     // REQUIRED: Client identification (100% populated in DB)
     _kf_client_code_id: extracted.clientCode || APP_DEFAULTS.clientCode,
@@ -84,9 +82,7 @@ export function mapToFileMakerFields(extracted) {
     
     // Job details
     people_required: APP_DEFAULTS.peopleRequired,
-    oneway_miles: extracted.miles || 0,
-    detainment: 0,
-    Quoted: 0,
+    // Miles/quote fields are read-only in FileMaker; exclude from create payload
     
     // Special handling flags (100% populated in DB)
     Additional_unit: APP_DEFAULTS.additionalUnit,
@@ -97,10 +93,7 @@ export function mapToFileMakerFields(extracted) {
     billing_status: APP_DEFAULTS.billingStatus,
     
     // Metadata
-    timestamp_create: new Date().toISOString(),
-    timestamp_mod: new Date().toISOString(),
-    account_create: 'OrderEntryTool',
-    account_mod: 'OrderEntryTool'
+    // Account metadata is handled by FileMaker
   };
   
   // Validate that all required foreign keys are present

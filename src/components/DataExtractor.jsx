@@ -1,6 +1,6 @@
 /**
- * PDF Text Debug Utility
- * Add this temporarily to DataExtractor to log raw text
+ * DataExtractor
+ * Handles PDF processing and exposes a debug view before advancing to the Review step.
  */
 
 import React, { useState, useEffect } from 'react';
@@ -14,46 +14,43 @@ export default function DataExtractor({ file, onDataExtracted, onBack }) {
   const [extractedData, setExtractedData] = useState(null);
   const [error, setError] = useState(null);
   const [debugText, setDebugText] = useState('');
+  const [autoAdvanced, setAutoAdvanced] = useState(false);
+  const [autoAdvanceEnabled, setAutoAdvanceEnabled] = useState(true);
 
   useEffect(() => {
     processFile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [file]);
 
   const processFile = async () => {
     try {
       setStatus('processing');
-      
+
       const pdfData = await processPDF(file, 'auto', (update) => {
         setProgress(update.progress || 50);
       });
-      
+
       setStatus('extracting');
-      
-      // DEBUG: Log raw text
+
       console.log('=== RAW PDF TEXT ===');
       console.log(pdfData.fullText);
-      
-      // Store for display
       setDebugText(pdfData.fullText.substring(0, 1500));
-      
-      // Look for ORIGIN block
+
       const originMatch = pdfData.fullText.match(/ORIGIN:\s*([\s\S]{0,400}?)(?:DESTINATION:|Asset)/i);
       console.log('=== ORIGIN MATCH ===');
       console.log(originMatch ? originMatch[0] : 'NOT FOUND');
-      
-      // Look for address
+
       const addressMatch = pdfData.fullText.match(/1325[^\n]*/);
       console.log('=== ADDRESS MATCH ===');
       console.log(addressMatch ? addressMatch[0] : 'NOT FOUND');
-      
+
       const data = extractDataFromText(pdfData.fullText);
       data.pdfMethod = pdfData.method;
       data.pdfConfidence = pdfData.confidence;
       data.rawText = pdfData.fullText;
-      
+
       setExtractedData(data);
       setStatus('complete');
-      
     } catch (err) {
       console.error('Processing error:', err);
       setError(err.message);
@@ -61,8 +58,18 @@ export default function DataExtractor({ file, onDataExtracted, onBack }) {
     }
   };
 
+  useEffect(() => {
+    if (status === 'complete' && extractedData && autoAdvanceEnabled && !autoAdvanced) {
+      setAutoAdvanced(true);
+      onDataExtracted(extractedData);
+    }
+  }, [status, extractedData, autoAdvanceEnabled, autoAdvanced, onDataExtracted]);
+
   const handleContinue = () => {
-    onDataExtracted(extractedData);
+    if (extractedData) {
+      setAutoAdvanced(true);
+      onDataExtracted(extractedData);
+    }
   };
 
   return (
@@ -71,7 +78,7 @@ export default function DataExtractor({ file, onDataExtracted, onBack }) {
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-2xl font-bold text-gray-900">Processing PDF</h2>
           <button onClick={onBack} className="text-gray-600 hover:text-gray-800">
-            ← Back
+            &lt; Back
           </button>
         </div>
 
@@ -106,15 +113,42 @@ export default function DataExtractor({ file, onDataExtracted, onBack }) {
               <div>
                 <p className="font-semibold text-green-900">Extraction Complete</p>
                 <p className="text-sm text-green-700">
-                  Confidence: {extractedData.confidence}% • Method: {extractedData.pdfMethod}
+                  Confidence: {extractedData.confidence}% - Method: {extractedData.pdfMethod}
                 </p>
               </div>
             </div>
 
-            {/* DEBUG: Show raw text preview */}
+            <div className="flex items-center justify-between mb-6 p-4 bg-gray-50 border border-gray-200 rounded-lg">
+              <div>
+                <p className="text-sm font-semibold text-gray-900">Auto-advance to Review</p>
+                <p className="text-xs text-gray-600">Toggle off to inspect extracted data before continuing.</p>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="text-sm text-gray-700" id="auto-advance-label">
+                  {autoAdvanceEnabled ? 'On' : 'Off'}
+                </span>
+                <button
+                  type="button"
+                  role="switch"
+                  aria-checked={autoAdvanceEnabled}
+                  aria-labelledby="auto-advance-label"
+                  onClick={() => setAutoAdvanceEnabled((prev) => !prev)}
+                  className={`relative inline-flex h-6 w-12 flex-shrink-0 rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out ${
+                    autoAdvanceEnabled ? 'bg-blue-600' : 'bg-gray-300'
+                  }`}
+                >
+                  <span
+                    className={`inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                      autoAdvanceEnabled ? 'translate-x-6' : 'translate-x-1'
+                    }`}
+                  />
+                </button>
+              </div>
+            </div>
+
             <details className="mb-6 p-4 bg-gray-50 rounded-lg">
               <summary className="cursor-pointer font-semibold">Debug: Raw Text Preview</summary>
-              <pre className="mt-2 text-xs overflow-x-auto">{debugText}</pre>
+              <pre className="mt-2 text-xs overflow-x-auto whitespace-pre-wrap break-words">{debugText}</pre>
             </details>
 
             <div className="grid grid-cols-2 gap-4 mb-6">
@@ -135,9 +169,14 @@ export default function DataExtractor({ file, onDataExtracted, onBack }) {
             <div className="flex gap-4">
               <button
                 onClick={handleContinue}
-                className="flex-1 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 font-semibold"
+                disabled={autoAdvanceEnabled}
+                className={`flex-1 py-3 rounded-lg font-semibold transition-colors ${
+                  autoAdvanceEnabled
+                    ? 'bg-blue-300 text-white cursor-not-allowed'
+                    : 'bg-blue-600 text-white hover:bg-blue-700'
+                }`}
               >
-                Continue to Review →
+                Continue to Review
               </button>
               <button
                 onClick={onBack}
@@ -169,9 +208,13 @@ export default function DataExtractor({ file, onDataExtracted, onBack }) {
 
 function DataField({ label, value }) {
   const hasValue = value && value.trim() !== '' && value !== 'undefined, undefined';
-  
+
   return (
-    <div className={`p-3 rounded-lg border ${hasValue ? 'bg-green-50 border-green-200' : 'bg-gray-50 border-gray-200'}`}>
+    <div
+      className={`p-3 rounded-lg border ${
+        hasValue ? 'bg-green-50 border-green-200' : 'bg-gray-50 border-gray-200'
+      }`}
+    >
       <p className="text-xs text-gray-600 mb-1">{label}</p>
       <p className={`font-medium ${hasValue ? 'text-gray-900' : 'text-gray-400'}`}>
         {hasValue ? value : 'Not found'}

@@ -7,9 +7,9 @@ const BASE_URL = 'https://modd.mainspringhost.com/fmi/data/vLatest';
 const USERNAME = 'trevor_api';
 const PASSWORD = 'XcScS2yRoTtMo7';
 const SEARCH_DB = 'PEP2_1';
-const CREATE_DB = 'pep-move-api';
+const CREATE_DB = 'PEP2_1';  // FIXED: Use same database for create
 const SEARCH_LAYOUT = 'jobs_api';
-const CREATE_LAYOUT = 'table';
+const CREATE_LAYOUT = '2.5-JOB_DETAIL';  // FIXED: Use proper layout with 208 fields
 
 // Colors for console output
 const colors = {
@@ -70,43 +70,57 @@ async function searchJob(orderNumber, token) {
 
 async function createTestJob(token) {
   // UPDATED: Use direct fieldData format (payload wrapper creates ghost records)
+  // Use EXACT field set from fieldMappings.js
   const testJob = {
-    // Core required fields
+    // Core job fields (CRITICAL: job_date was missing!)
     job_status: 'Entered',
     job_type: 'Delivery',
-    client_order_number: `TEST_${Date.now()}`,
-    date_received: new Date().toISOString().split('T')[0],
-    due_date: new Date().toISOString().split('T')[0],
+    // Dates are auto-enter in FileMaker; omit on create
     
-    // Customer info
-    Customer_C1: 'Test Customer',
-    address_C1: '123 Test Street',
-    zip_C1: '84119',
-    phone_C1: '801-555-1234',
-    
-    // Product info
-    product_serial_number: `TEST_SN_${Date.now()}`,
-    description_product: 'Test Equipment',
-    
-    // REQUIRED Foreign Keys
+    // REQUIRED: Client identification
     _kf_client_code_id: 'TTR-u',
     _kf_client_id: '1247',
     _kf_client_class_id: '110.1',
+    
+    // REQUIRED: Job classification
     _kf_disposition: 'Standard',
     _kf_notification_id: 'Yes',
     _kf_market_id: 'Utah',
+    
+    // Order information
+    client_order_number: `TEST_${Date.now()}`,
+    client_order_number_2: '',
+    
+    // Location fields
+    location_load: 'PEP',
+    location_return: '',
+    
+    // Customer information
+    Customer_C1: 'Test Customer',
+    address_C1: '123 Test Street',
+    address2_C1: '',
+    zip_C1: '84119',
     _kf_city_id: 'West Valley City',
     _kf_state_id: 'UT',
+    contact_C1: 'Test Contact 801-555-1234',
+    phone_C1: '801-555-1234',
     
-    // Location
-    location_load: 'PEP',
+    // Product information
+    product_serial_number: `TEST_SN_${Date.now()}`,
+    description_product: 'Test Equipment',
+    product_type: '',
+    piece_total: 1,
+    
+    // Notes fields
+    notes_call_ahead: '',
+    notes_driver: '',
+    notes_job: '',
+    notes_schedule: '',
     
     // Job details
     people_required: 2,
-    oneway_miles: 0,
-    piece_total: 1,
     
-    // Flags
+    // Special handling flags
     Additional_unit: 'NO',
     same_day: 'NO',
     same_day_return: 'NO',
@@ -114,17 +128,19 @@ async function createTestJob(token) {
     named_insurance: 'NO',
     billing_status: 'Initial',
     
-    // Metadata
-    timestamp_create: new Date().toISOString(),
-    timestamp_mod: new Date().toISOString(),
-    account_create: 'test_api',
-    account_mod: 'test_api'
+    // Notes (requested due date stored in schedule notes)
+    notes_schedule: ''
   };
 
   // Use DIRECT fieldData (not payload wrapper)
   const payload = {
     fieldData: testJob
   };
+  
+  // Debug: Log field count
+  console.log(`\n  Sending ${Object.keys(testJob).length} fields:`);
+  console.log(`  Fields: ${Object.keys(testJob).join(', ')}`);
+  console.log(``);
 
   const response = await fetch(
     `${BASE_URL}/databases/${CREATE_DB}/layouts/${CREATE_LAYOUT}/records`,
@@ -140,6 +156,30 @@ async function createTestJob(token) {
 
   const data = await response.json();
   return { response, data, testJob };
+}
+
+async function fetchJobDetails(recordId, token) {
+  const response = await fetch(
+    `${BASE_URL}/databases/${CREATE_DB}/layouts/${CREATE_LAYOUT}/records/${recordId}`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    }
+  );
+
+  const data = await response.json();
+
+  if (response.ok && data.response?.data?.[0]?.fieldData) {
+    return { success: true, fieldData: data.response.data[0].fieldData };
+  }
+
+  return {
+    success: false,
+    error: data.messages?.[0]?.message || `Fetch failed with status ${response.status}`
+  };
 }
 
 async function runTests() {
@@ -205,8 +245,24 @@ async function runTests() {
     if (response.ok && data.response?.recordId) {
       log(`✓ Job created successfully with DIRECT fieldData format`, 'green');
       log(`  Record ID: ${data.response.recordId}`, 'reset');
+      log(`  Mod ID: ${data.response.modId}`, 'reset');
       log(`  Test Order #: ${testJob.client_order_number}`, 'reset');
-      log(`  This record should be usable (not a ghost record)\n`, 'green');
+      log(`  Field count: ${Object.keys(testJob).length}`, 'reset');
+      log('  This record should be usable (not a ghost record)', 'green');
+
+      const verify = await fetchJobDetails(data.response.recordId, auth.token);
+      if (verify.success) {
+        log('Verification:', 'yellow');
+        log(
+          `  FileMaker Job ID (_kp_job_id): ${verify.fieldData._kp_job_id ?? 'N/A'}`,
+          'reset'
+        );
+        log(`  Job Status: ${verify.fieldData.job_status ?? 'N/A'}`, 'reset');
+        log(`  Job Type: ${verify.fieldData.job_type ?? 'N/A'}`, 'reset');
+      } else {
+        log('Verification fetch failed:', 'red');
+        log(`  ${verify.error}`, 'red');
+      }
     } else {
       log(`✗ Job creation failed: ${response.status}`, 'red');
       log(`  Code: ${data.messages?.[0]?.code}`, 'red');

@@ -1,5 +1,6 @@
 /**
  * FileMaker API Service
+ * CONFIRMED: Uses DIRECT fieldData with PEP2_1 database
  */
 
 import FM_CONFIG from '../config/filemaker.js';
@@ -69,30 +70,71 @@ export async function searchJobs(orderNumber, token) {
   throw new Error(`Search failed: ${response.status}`);
 }
 
+async function fetchJobRecord(recordId, token) {
+  try {
+    const response = await fetch(
+      `${FM_CONFIG.getCreateUrl(FM_CONFIG.CREATE_DB.name, FM_CONFIG.CREATE_DB.layout)}/${recordId}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      }
+    );
+
+    const data = await response.json();
+
+    if (response.ok && data.response?.data?.[0]?.fieldData) {
+      return data.response.data[0].fieldData;
+    }
+
+    console.warn('Job detail fetch failed:', data.messages?.[0] || response.status);
+    return null;
+  } catch (error) {
+    console.error('Job detail fetch error:', error);
+    return null;
+  }
+}
+
 /**
  * Create a job record in FileMaker
- * Uses DIRECT fieldData format (not payload wrapper)
+ * Uses DIRECT fieldData format with PEP2_1 database
+ * Layout: 2.5-JOB_DETAIL (208 fields)
+ * 
  * @param {object} jobData - Job data with all fields
  * @param {string} token - Auth token
  * @returns {Promise<object>} Result with recordId
  */
 export async function createJob(jobData, token) {
-  console.log('Creating job with direct fieldData format');
+  console.log('Creating job with DIRECT fieldData format');
+  console.log('Database: PEP2_1, Layout: 2.5-JOB_DETAIL');
   console.log('Token:', token ? token.substring(0, 20) + '...' : 'MISSING');
   
   // Enrich job data with resolved foreign keys
   const enrichedData = await enrichWithLookups(jobData, token);
   
-  console.log('Enriched data sample:', {
+  console.log('Job data sample:', {
     client_code: enrichedData._kf_client_code_id,
-    city: enrichedData._kf_city_id,
-    state: enrichedData._kf_state_id,
-    order_number: enrichedData.client_order_number
+    order_number: enrichedData.client_order_number,
+    customer: enrichedData.Customer_C1,
+    field_count: Object.keys(enrichedData).length
   });
 
-  // Use DIRECT fieldData format (confirmed: payload wrapper creates ghost records)
+  // Use DIRECT fieldData format (confirmed working with 2.5-JOB_DETAIL layout)
+  // Strip known auto-enter fields if present
+  const {
+    job_date,
+    date_received,
+    due_date,
+    timestamp_create,
+    timestamp_mod,
+    account_create,
+    account_mod,
+    ...safeData
+  } = enrichedData;
   const payload = {
-    fieldData: enrichedData
+    fieldData: safeData
   };
 
   const response = await fetch(
@@ -111,10 +153,14 @@ export async function createJob(jobData, token) {
 
   if (response.ok && data.response) {
     console.log('✓ Job created successfully:', data.response.recordId);
+    const recordId = data.response.recordId;
+    const jobDetails = await fetchJobRecord(recordId, token);
     return {
       success: true,
-      recordId: data.response.recordId,
-      modId: data.response.modId
+      recordId,
+      modId: data.response.modId,
+      jobNumber: jobDetails?._kp_job_id ?? null,
+      jobDetails
     };
   }
 
@@ -168,3 +214,5 @@ export async function createJobWithAuth(jobData) {
     throw error;
   }
 }
+
+

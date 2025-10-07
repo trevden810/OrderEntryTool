@@ -8,6 +8,7 @@ export default function ReviewForm({ extractedData, onBack }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [result, setResult] = useState(null);
   const [validationErrors, setValidationErrors] = useState([]);
+  const [requestedDueDate, setRequestedDueDate] = useState('');
 
   const handleChange = (field, value) => {
     setJobData(prev => ({ ...prev, [field]: value }));
@@ -28,11 +29,15 @@ export default function ReviewForm({ extractedData, onBack }) {
     try {
       const normalizedData = normalizeJobData(jobData);
       const response = await createJobWithAuth(normalizedData);
+      const jobNumber = response.jobNumber ?? response.jobDetails?._kp_job_id ?? null;
       
       setResult({
         success: true,
         recordId: response.recordId,
-        message: 'Job created successfully!'
+        jobNumber,
+        message: jobNumber
+          ? `Job created successfully! FileMaker Job ID: ${jobNumber}`
+          : 'Job created successfully!'
       });
     } catch (error) {
       setResult({
@@ -42,6 +47,18 @@ export default function ReviewForm({ extractedData, onBack }) {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handleRequestedDueDate = (value) => {
+    setRequestedDueDate(value);
+    // Merge requested due date as a line in notes_schedule without duplicating
+    setJobData(prev => {
+      const existing = prev.notes_schedule || '';
+      const cleaned = existing.replace(/(^|\n)Requested due date:\s?.*$/mi, '').trim();
+      const line = value ? `Requested due date: ${value}` : '';
+      const merged = [cleaned, line].filter(Boolean).join(cleaned ? '\n' : '');
+      return { ...prev, notes_schedule: merged };
+    });
   };
 
   return (
@@ -73,21 +90,25 @@ export default function ReviewForm({ extractedData, onBack }) {
         <div className="grid grid-cols-2 gap-6 mb-8">
           <FormField
             label="Order Number *"
+            name="client_order_number"
             value={jobData.client_order_number}
             onChange={(v) => handleChange('client_order_number', v)}
           />
           <FormField
             label="Tracking Number"
+            name="client_order_number_2"
             value={jobData.client_order_number_2}
             onChange={(v) => handleChange('client_order_number_2', v)}
           />
           <FormField
             label="Customer Name *"
+            name="Customer_C1"
             value={jobData.Customer_C1}
             onChange={(v) => handleChange('Customer_C1', v)}
           />
           <FormField
             label="Job Type *"
+            name="job_type"
             value={jobData.job_type}
             onChange={(v) => handleChange('job_type', v)}
             type="select"
@@ -95,22 +116,26 @@ export default function ReviewForm({ extractedData, onBack }) {
           />
           <FormField
             label="Address *"
+            name="address_C1"
             value={jobData.address_C1}
             onChange={(v) => handleChange('address_C1', v)}
             className="col-span-2"
           />
           <FormField
             label="Address Line 2"
+            name="address2_C1"
             value={jobData.address2_C1}
             onChange={(v) => handleChange('address2_C1', v)}
           />
           <FormField
             label="ZIP Code *"
+            name="zip_C1"
             value={jobData.zip_C1}
             onChange={(v) => handleChange('zip_C1', v)}
           />
           <FormField
             label="Contact Info"
+            name="contact_C1"
             value={jobData.contact_C1}
             onChange={(v) => handleChange('contact_C1', v)}
             className="col-span-2"
@@ -118,34 +143,40 @@ export default function ReviewForm({ extractedData, onBack }) {
           />
           <FormField
             label="Serial Number"
+            name="product_serial_number"
             value={jobData.product_serial_number}
             onChange={(v) => handleChange('product_serial_number', v)}
           />
           <FormField
             label="Product Description"
+            name="description_product"
             value={jobData.description_product}
             onChange={(v) => handleChange('description_product', v)}
           />
           <FormField
-            label="Due Date"
-            value={jobData.due_date}
-            onChange={(v) => handleChange('due_date', v)}
+            label="Requested Due Date (note)"
+            name="requested_due_date"
+            value={requestedDueDate}
+            onChange={handleRequestedDueDate}
             type="date"
           />
           <FormField
             label="People Required"
+            name="people_required"
             value={jobData.people_required}
             onChange={(v) => handleChange('people_required', v)}
             type="number"
           />
           <FormField
             label="Call Ahead Notes"
+            name="notes_call_ahead"
             value={jobData.notes_call_ahead}
             onChange={(v) => handleChange('notes_call_ahead', v)}
             className="col-span-2"
           />
           <FormField
             label="Driver Notes"
+            name="notes_driver"
             value={jobData.notes_driver}
             onChange={(v) => handleChange('notes_driver', v)}
             className="col-span-2"
@@ -176,6 +207,9 @@ export default function ReviewForm({ extractedData, onBack }) {
             {result.recordId && (
               <p className="text-sm">Record ID: {result.recordId}</p>
             )}
+            {result.jobNumber && (
+              <p className="text-sm">FileMaker Job ID: {result.jobNumber}</p>
+            )}
             {result.success && (
               <button
                 onClick={() => window.location.reload()}
@@ -191,12 +225,16 @@ export default function ReviewForm({ extractedData, onBack }) {
   );
 }
 
-function FormField({ label, value, onChange, type = 'text', options, multiline, className, placeholder }) {
+function FormField({ label, name, value, onChange, type = 'text', options, multiline, className, placeholder }) {
+  const inputId = name || label.replace(/\s+/g, '_').toLowerCase();
+
   if (type === 'select') {
     return (
       <div className={className}>
-        <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
+        <label htmlFor={inputId} className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
         <select
+          id={inputId}
+          name={name}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
@@ -212,8 +250,10 @@ function FormField({ label, value, onChange, type = 'text', options, multiline, 
   if (multiline) {
     return (
       <div className={className}>
-        <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
+        <label htmlFor={inputId} className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
         <textarea
+          id={inputId}
+          name={name}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           rows={3}
@@ -226,9 +266,11 @@ function FormField({ label, value, onChange, type = 'text', options, multiline, 
 
   return (
     <div className={className}>
-      <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
+      <label htmlFor={inputId} className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
       <input
         type={type}
+        id={inputId}
+        name={name}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"

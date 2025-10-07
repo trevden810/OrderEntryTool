@@ -1,0 +1,1006 @@
+  Bulk Job Actions
+  Fields: 29
+
+✓ Job Schedule
+  Fields: 28
+  Contains job-related fields!
+  Job fields: job_status_driver_install_reason
+
+✓ LST_ASSET_REVEW
+  Fields: 28
+  Contains job-related fields!
+  Job fields: _kf_client_code
+
+✓      PRT_INVOICE_STD
+  Fields: 28
+  Contains job-related fields!
+  Job fields: _kp_job_id, client_order_number, job_date, Customer_C1, job_type, product_serial_number, client_order_number_2, _kp_job_id
+
+  Miles List for Dan
+  Fields: 28
+
+  TRUCKS_DETAIL_WIPERS
+  Fields: 26
+
+✓      PRT_INVOICE_RSETUP
+  Fields: 26
+  Contains job-related fields!
+  Job fields: _kp_job_id, client_order_number, job_date, Customer_C1, job_type
+
+  market
+  Fields: 26
+
+  TRUCKS_DETAIL_FUELFILTER
+  Fields: 25
+
+  ricoh_notes_import
+  Fields: 24
+
+✓ jobs_api
+  Fields: 24
+  Contains job-related fields!
+  Job fields: _kp_job_id, job_date, job_status, job_type, _kf_client_code_id, address_C1, Customer_C1, address_C2, Customer_C2, job_status_driver
+
+✓ TASKS
+  Fields: 23
+  Contains job-related fields!
+  Job fields: client_order_number, id_job_group
+
+✓      PRT_ASSET_BILLING
+  Fields: 21
+  Contains job-related fields!
+  Job fields: _kf_client_code, client_order_number
+
+✓      PRT_JOBS_FOUND_SET
+  Fields: 20
+  Contains job-related fields!
+  Job fields: _kp_job_id, _kf_client_code_id, job_date, Customer_C1, job_type, job_status, job_reference_prior, client_order_number
+
+✓ Clients All Fields
+  Fields: 19
+  Contains job-related fields!
+  Job fields: _kp_client_code, client_full_name, _kp_client_id, _kp_client_type, address_i_1, address_i_2, notes_job_default
+
+✓ Clients All Fields
+  Fields: 19
+  Contains job-related fields!
+  Job fields: _kp_client_code, client_full_name, _kp_client_id, _kp_client_type, address_i_1, address_i_2, notes_job_default
+
+✓ MAN_JOB
+  Fields: 18
+  Contains job-related fields!
+  Job fields: job_completed, job_completed_percentage
+
+✓      PRT_LR_DUE_DATE
+  Fields: 17
+  Contains job-related fields!
+  Job fields: _kf_client_code, _kf_job_id, _kf_client_code
+
+✓ TH_MFR_Log 2
+  Fields: 17
+  Contains job-related fields!
+  Job fields: _kf_client_id, _kf_status_job_2, kp_job_ID
+
+  TRUCKS_DETAIL_EMISSIONS
+  Fields: 16
+
+  TRUCKS_DETAIL_INSURANCE
+  Fields: 16
+
+✓ jobs_some_fields
+  Fields: 16
+  Contains job-related fields!
+  Job fields: _kp_job_id, _kf_client_id, job_date, job_status, job_type, Customer_C1, client_order_number, product_serial_number, _kf_client_code_id
+
+✓      PRT_STAGING
+  Fields: 16
+  Contains job-related fields!
+  Job fields: _kp_job_id, _kf_client_code_id, job_type, Customer_C1, client_order_number, client_order_number_2
+
+  2.5-Product_Detail
+  Fields: 16
+
+  CARD All Notes
+  Fields: 16
+
+  Shuttle List
+  Fields: 16
+
+✓ Billing Review
+  Fields: 16
+  Contains job-related fields!
+  Job fields: job_audit_log
+
+  Notifications Review
+  Fields: 16
+
+  PRODUCT_DETAIL
+  Fields: 15
+
+  Performance Dashboard
+  Fields: 14
+
+✓      PRT_DAILY
+  Fields: 14
+  Contains job-related fields!
+  Job fields: _kp_job_id, _kf_client_code_id, Customer_C1, job_type, client_order_number, job_status     
+
+✓ TH_MFR_Log
+  Fields: 14
+  Contains job-related fields!
+  Job fields: _kf_client_id, _kf_status_job_2
+
+✓ CARD Find Jobs for Task Review
+  Fields: 14
+  Contains job-related fields!
+  Job fields: PEP2::client_search_g
+
+  VIRTUAL
+  Fields: 14
+
+  Task Review
+  Fields: 14
+
+  CARD - Labor Costs
+  Fields: 13
+
+  LABOR_COST
+  Fields: 13
+
+✓      PRT_RICOH_SERVICE
+  Fields: 12
+  Contains job-related fields!
+  Job fields: JOBS DETAIL::job_date, JOBS DETAIL::job_type, JOBS DETAIL::_kp_job_id, JOBS DETAIL::client_order_number, JOBS DETAIL::Customer_C1, JOBS DETAIL::job_status
+
+✓ route_sheet_virtual
+  Fields: 12
+  Contains job-related fields!
+  Job fields: job_number, job_type
+
+✓ CARD Edit Job Details
+  Fields: 12
+  Contains job-related fields!
+  Job fields: job_status_driver_install, job_status
+
+✓ CARD Job Delivery Confirmation Details
+  Fields: 12
+  Contains job-related fields!
+  Job fields: job_status_driver, job_status_driver_install_reason, job_status_driver_install
+
+  Stops
+  Fields: 12
+
+✓ INVOICE_ITEM
+  Fields: 12
+  Contains job-related fields!
+  Job fields: id_job_moved_from
+
+✓ STOP
+  Fields: 12
+  Contains job-related fields!
+  Job fields: id_job_list
+
+  Pep2 All fields
+  Fields: 11
+
+✓ INVOICES
+  Fields: 11
+  Contains job-related fields!
+  Job fields: _kf_client_id
+
+  TRUCKS_ALL_FIELDS
+  Fields: 11
+
+✓      TH_PRT_MFG_LOG Copy
+  Fields: 11
+  Contains job-related fields!
+  Job fields: _kf_client_id, JOBS_MFR_LOG 2::job_date, JOBS_Client_Log::_kf_client_id, _kf_client_id, JOBS_MFR_LOG 2::_kf_client_id, JOBS_MFR_LOG 2::job_date
+
+✓ PDF
+  Fields: 11
+  Contains job-related fields!
+  Job fields: client_order_number
+
+  Shuttle List Portal
+  Fields: 11
+
+  PAYMENT
+  Fields: 11
+
+  EDI_997
+  Fields: 11
+
+  PRODUCT
+  Fields: 10
+
+       PRODUCT_SEARCH_IMAGES
+  Fields: 10
+
+       PRODUCT_SEARCH_WEIGHT
+  Fields: 10
+
+✓ EDI_214
+  Fields: 10
+  Contains job-related fields!
+  Job fields: job_status, client_order_number
+
+  CARD Job Delivery Confirmation Details MOD
+  Fields: 10
+
+  ASSET_ORDER
+  Fields: 10
+
+✓      JOB_QUERY_RESULT
+  Fields: 9
+  Contains job-related fields!
+  Job fields: _kp_job_id, product_serial_number, _kf_client_code_id, Customer_C1, client_order_number, job_date
+
+  MILES_DETAIL
+  Fields: 9
+
+✓ Client Log All Fields
+  Fields: 9
+  Contains job-related fields!
+  Job fields: _kf_client_id, _kf_status_job_2
+
+✓ Processing JOBS_DETAIL
+  Fields: 9
+  Contains job-related fields!
+  Job fields: _kp_job_id, job_status, job_date, client_order_number, job_type, client_order_number_2     
+
+  Compose Email
+  Fields: 9
+
+  Shuttle Sheet Copy
+  Fields: 9
+
+  pep_user
+  Fields: 9
+
+  Billing Review Ricoh
+  Fields: 9
+
+✓ PRECALL_LOG
+  Fields: 9
+  Contains job-related fields!
+  Job fields: id_job_list
+
+  client_alternative_rate_class
+  Fields: 9
+
+✓ Daily Log Internal  Print
+  Fields: 8
+  Contains job-related fields!
+  Job fields: _kp_job_id, product_serial_number, job_type
+
+  FUEL_SURCHARGE
+  Fields: 8
+
+  CONTACTS
+  Fields: 8
+
+  CARD - User Prefs
+  Fields: 8
+
+✓ Scheduling
+  Fields: 8
+  Contains job-related fields!
+  Job fields: job_date
+
+  CAPACITY
+  Fields: 8
+
+  LS_CHECKLIST_ITEM
+  Fields: 8
+
+✓ SCHEDULING
+  Fields: 8
+  Contains job-related fields!
+  Job fields: job_date
+
+  EDI_210
+  Fields: 8
+
+  ASSET_ORDER_ITEM
+  Fields: 8
+
+✓      JOB_RESCHEDULE_CHOICE
+  Fields: 7
+  Contains job-related fields!
+  Job fields: _kp_job_id, product_serial_number, _kf_client_code_id, Customer_C1
+
+✓      PRT_RICOH_LOG
+  Fields: 7
+  Contains job-related fields!
+  Job fields: _kf_status_job_2, _kf_client_id, _kf_client_id, _kf_client_id
+
+✓      TH_PRT_MFG_LOG
+  Fields: 7
+  Contains job-related fields!
+  Job fields: JOBS_MFR_LOG::job_date, JOBS_MFR_LOG::_kf_client_id, JOBS_Client_Log::_kf_client_id        
+
+✓ Ricoh_Log All Fields
+  Fields: 7
+  Contains job-related fields!
+  Job fields: _kf_client_id, _kf_status_job_2
+
+✓ Daily Log Print-Canon
+  Fields: 7
+  Contains job-related fields!
+  Job fields: _kp_job_id, product_serial_number, job_type
+
+✓ Daily Log Print-Canon Copy
+  Fields: 7
+  Contains job-related fields!
+  Job fields: _kp_job_id, product_serial_number, job_type
+
+✓ CARD Find Jobs for Scheduling
+  Fields: 7
+  Contains job-related fields!
+  Job fields: PEP2::client_search_g
+
+  Send Email with Attachments
+  Fields: 7
+
+✓ CLIENT_REP
+  Fields: 7
+  Contains job-related fields!
+  Job fields: client_group, client_info_all
+
+  LS_CHECKLIST
+  Fields: 7
+
+✓ NA_ASSET_QUERY_RESULT
+  Fields: 6
+  Contains job-related fields!
+  Job fields: _kf_client_code
+
+✓      PRT_DAILY_TRUCK
+  Fields: 6
+  Contains job-related fields!
+  Job fields: _kp_job_id, _kf_client_code_id, job_type, Customer_C1, job_date
+
+✓ Daily Log Print with Driver
+  Fields: 6
+  Contains job-related fields!
+  Job fields: _kp_job_id, product_serial_number, job_type
+
+  CARD Edit Stop
+  Fields: 6
+
+  CARD Asset Order
+  Fields: 6
+
+  JOB_AUDIT
+  Fields: 6
+
+  CARD - Labor Costs Admin Copy
+  Fields: 6
+
+✓ FOUND_SET
+  Fields: 6
+  Contains job-related fields!
+  Job fields: id_job_list
+
+✓ EDI_204_RUN
+  Fields: 6
+  Contains job-related fields!
+  Job fields: id_job_list
+
+  LS_LOG
+  Fields: 6
+
+  PEP Map
+  Fields: 6
+
+✓ Job Confirmation Details
+  Fields: 5
+  Contains job-related fields!
+  Job fields: job_status_driver, job_status_driver_install_reason, job_status_driver_install
+
+✓ Daily Log Print
+  Fields: 5
+  Contains job-related fields!
+  Job fields: _kp_job_id, product_serial_number, job_type, job_date
+
+✓ ricoh_notes_import_header
+  Fields: 5
+  Contains job-related fields!
+  Job fields: id_job_not_found_list
+
+  CARD - Import Valley Manifest
+  Fields: 5
+
+  Temp Display Email
+  Fields: 5
+
+  PIECE
+  Fields: 5
+
+  Mileage Calculator
+  Fields: 5
+
+✓ pep-move-api
+  Fields: 5
+  Contains job-related fields!
+  Job fields: job_id
+
+  Market_Selection
+  Fields: 4
+
+✓ Daily Log Select Client
+  Fields: 4
+  Contains job-related fields!
+  Job fields: client_search_g, CLIENTS favorites::client_full_name
+
+✓ Daily Log Print Copy
+  Fields: 4
+  Contains job-related fields!
+  Job fields: _kp_job_id, product_serial_number, job_type
+
+  FUEL_PRICE
+  Fields: 4
+
+✓ email_address_book
+  Fields: 4
+  Contains job-related fields!
+  Job fields: client_name
+
+  PRODUCT_LINE
+  Fields: 4
+
+       ASSET_QUERY_RESULT
+  Fields: 3
+
+       PRODUCT_QUERY_NEW
+  Fields: 3
+
+✓      PRT_CLIENT_LIST
+  Fields: 3
+  Contains job-related fields!
+  Job fields: _kp_client_id, client_full_name, _kp_client_code
+
+✓      ASSET_REVIEW_QUERY
+  Fields: 3
+  Contains job-related fields!
+  Job fields: client_code_g
+
+  log
+  Fields: 3
+
+  CARD Total Revenue
+  Fields: 3
+
+✓ Driver Compliance
+  Fields: 3
+  Contains job-related fields!
+  Job fields: JOBS DETAIL::job_date
+
+✓ On Time Report
+  Fields: 3
+  Contains job-related fields!
+  Job fields: JOBS DETAIL::job_date
+
+✓ CARD Find Jobs for 210 Review
+  Fields: 3
+  Contains job-related fields!
+  Job fields: PEP2::client_search_g
+
+✓ CARD Find Jobs Advanced
+  Fields: 3
+  Contains job-related fields!
+  Job fields: PEP2::client_search_g
+
+✓ CARD - Find Jobs for Notifications Review
+  Fields: 3
+  Contains job-related fields!
+  Job fields: PEP2::client_search_g
+
+  CARD - Import Labor Costs
+  Fields: 3
+
+  Shuttle Sheet
+  Fields: 3
+
+  Shuttle Sheet 4x6
+  Fields: 3
+
+✓ client_rate_class
+  Fields: 3
+  Contains job-related fields!
+  Job fields: client_code
+
+  Import Multi Page PDF
+  Fields: 2
+
+✓      JOB_RESCHEDULE_DATE
+  Fields: 2
+  Contains job-related fields!
+  Job fields: _kp_job_id, job_date
+
+       ASSET_QUERY
+  Fields: 2
+
+✓      JOB_QUERY
+  Fields: 2
+  Contains job-related fields!
+  Job fields: _kp_job_id
+
+       PRODUCT_QUERY_RESULT
+  Fields: 2
+
+  Manufacturer Log Selector
+  Fields: 2
+
+  Manufacturer Log Selector Copy
+  Fields: 2
+
+  edi_export
+  Fields: 2
+
+  dashboard_graphics
+  Fields: 2
+
+  CARD Find Upcoming Jobs
+  Fields: 2
+
+  CARD Duplicate Job
+  Fields: 2
+
+  CARD - Choose Market for Stops
+  Fields: 2
+
+  CARD - Find Jobs for Scorecard
+  Fields: 2
+
+  CARD - Find Jobs for Driver Compliance
+  Fields: 2
+
+  CARD - Find Jobs for On Time Report
+  Fields: 2
+
+  CARD - Import TechTrans XML
+  Fields: 2
+
+  CARD - Import Canon Jobs
+  Fields: 2
+
+✓ JOBS testing
+  Fields: 2
+  Contains job-related fields!
+  Job fields: _kf_client_id, _kp_job_id
+
+  SMS_TEMPLATE
+  Fields: 2
+
+  CLIENT_GROUP
+  Fields: 2
+
+  Print Labor Cost Report
+  Fields: 2
+
+✓ PEP Map TESTING
+  Fields: 2
+  Contains job-related fields!
+  Job fields: _kp_job_id
+
+  EDI Import
+  Fields: 1
+
+  Ricoh Import
+  Fields: 1
+
+  Remittance Import Ricoh
+  Fields: 1
+
+  Remittance Import Valley
+  Fields: 1
+
+  Import Valley Manifest
+  Fields: 1
+
+  Remittance Import Canon
+  Fields: 1
+
+  Main (WA)
+  Fields: 1
+
+  select_market_and_date
+  Fields: 1
+
+       ASSET_QUERY_JOB
+  Fields: 1
+
+  Asset QR Code
+  Fields: 1
+
+       JOB_QUERY_ASSET
+  Fields: 1
+
+       PRODUCT_QUERY
+  Fields: 1
+
+✓      PRT_BYD_Valley_IDtag
+  Fields: 1
+  Contains job-related fields!
+  Job fields: client_order_number
+
+✓ OUTSIDE_JOB_SCHEDULE
+  Fields: 1
+  Contains job-related fields!
+  Job fields: CLIENTS DETAIL::client_full_name
+
+  Processing Ricoh Import
+  Fields: 1
+
+  Processing PEP2
+  Fields: 1
+
+  open_window
+  Fields: 1
+
+  shadow
+  Fields: 1
+
+  delivery_confirmation_2_photo
+  Fields: 1
+
+  Photo Enlarge Webdirect
+  Fields: 1
+
+  Print Route Sheet
+  Fields: 1
+
+  Processing EDI_204
+  Fields: 1
+
+  Processing PDF
+  Fields: 1
+
+  PDF Insert
+  Fields: 1
+
+  Processing EDI_997
+  Fields: 1
+
+  CARD Notifications
+  Fields: 1
+
+  CARD Find Multiple Job Numbers
+  Fields: 1
+
+  CARD Find Multiple Billing Review
+  Fields: 1
+
+  CARD Find Multiple Jobs
+  Fields: 1
+
+  CARD Find Multiple Assets
+  Fields: 1
+
+  CARD Paste List of Zip Codes
+  Fields: 1
+
+  CARD - LS Checklist
+  Fields: 1
+
+  CARD - LS Checklist Copy
+  Fields: 1
+
+  CARD - Choose Market for Scorecard Copy
+  Fields: 1
+
+  CARD - 204 Runs
+  Fields: 1
+
+  User Message Script Result
+  Fields: 1
+
+  Asset Label 4x6
+  Fields: 1
+
+  RATES
+  Fields: 1
+
+  log_api
+  Fields: 1
+
+  -Splash
+  Fields: 0
+
+  BANNER
+  Fields: 0
+
+  Open Windows
+  Fields: 0
+
+  Utility Processing
+  Fields: 0
+
+  Main Processing
+  Fields: 0
+
+  pep-move-api Processing
+  Fields: 0
+
+  LABOR_COST Processing
+  Fields: 0
+
+  Remittance Summary
+  Fields: 0
+
+  -
+  Fields: 0
+
+  Dashboard Pie Chart
+  Fields: 0
+
+  Dashboard Bar Graph
+  Fields: 0
+
+  Dashboard Column Graph
+  Fields: 0
+
+  Market_Selection Copy
+  Fields: 0
+
+  Main (CO)
+  Fields: 0
+
+  Main (OR)
+  Fields: 0
+
+  -
+  Fields: 0
+
+  -
+  Fields: 0
+
+  Display Container
+  Fields: 0
+
+  - RESCHEDULE
+  Fields: 0
+
+  -
+  Fields: 0
+
+  -
+  Fields: 0
+
+  - ASSET QUERRY
+  Fields: 0
+
+  -
+  Fields: 0
+
+  -
+  Fields: 0
+
+  -
+  Fields: 0
+
+       TRUCKS_ASSIGN
+  Fields: 0
+
+       TRUCKS_ASSIGN Copy
+  Fields: 0
+
+  -
+  Fields: 0
+
+  -
+  Fields: 0
+
+  -
+  Fields: 0
+
+  -
+  Fields: 0
+
+  - PRINT LAYOUTS
+  Fields: 0
+
+       PRT_RATE_LIST
+  Fields: 0
+
+       PRT_BYD_Valley_IDtag Copy
+  Fields: 0
+
+       PRT_OCE
+  Fields: 0
+
+  OUTSIDE
+  Fields: 0
+
+  PRT Client Log Yesterday
+  Fields: 0
+
+  Processing JOBS
+  Fields: 0
+
+  Processing ROUTE
+  Fields: 0
+
+  Processing ROUTE_from_mobile
+  Fields: 0
+
+  Processing Ricoh Import Header
+  Fields: 0
+
+  Processing EMPLOYEES
+  Fields: 0
+
+  Processing TRUCKS DETAIL
+  Fields: 0
+
+  Processing dashboard_graphics
+  Fields: 0
+
+  delivery_confirmation_photo
+  Fields: 0
+
+  Print Staging Report
+  Fields: 0
+
+  Canary in Coal Mine
+  Fields: 0
+
+  Confirm 214 Requirements
+  Fields: 0
+
+  Ricoh Notes Header
+  Fields: 0
+
+  Insert Container
+  Fields: 0
+
+  Processing FOUND_SET
+  Fields: 0
+
+  PDF List
+  Fields: 0
+
+  Processing CLIENTS
+  Fields: 0
+
+  Processing CLIENTS DETAIL
+  Fields: 0
+
+  Processing EDI_210_REVIEW
+  Fields: 0
+
+  Processing SCHEDULING
+  Fields: 0
+
+  Processing LS_CHECKLIST
+  Fields: 0
+
+  Processing pep_user
+  Fields: 0
+
+  Processing PHOTO
+  Fields: 0
+
+  Processing STOP
+  Fields: 0
+
+  Processing PRECALL_LOG
+  Fields: 0
+
+  Processing INVOICES_DETAIL
+  Fields: 0
+
+  Processing INVOICE_ITEM
+  Fields: 0
+
+  Processing TASKS
+  Fields: 0
+
+  Processing ASSET_ORDER
+  Fields: 0
+
+  Processing ASSET_ORDER_ITEM
+  Fields: 0
+
+  Processing EDI_210
+  Fields: 0
+
+  employee_pay_rates
+  Fields: 0
+
+  signature
+  Fields: 0
+
+  CARD Driver Install Reason
+  Fields: 0
+
+  Scorecard
+  Fields: 0
+
+  CARD Duplicate Job Copy
+  Fields: 0
+
+  Message Display
+  Fields: 0
+
+  pep_pricing_rates
+  Fields: 0
+
+  pep_rate_class
+  Fields: 0
+
+  Compare Pricing
+  Fields: 0
+
+  CARD - Choose Market
+  Fields: 0
+
+  CARD - Change Client and Market
+  Fields: 0
+
+  CARD - Navigation
+  Fields: 0
+
+  CARD - Labor Costs Admin
+  Fields: 0
+
+  PHOTO
+  Fields: 0
+
+  Shuttle Pieces
+  Fields: 0
+
+  Shuttle Pieces All
+  Fields: 0
+
+  SHUTTLE_SCAN
+  Fields: 0
+
+  Manage Found Sets
+  Fields: 0
+
+  Client Access
+  Fields: 0
+
+  status_tracker_log
+  Fields: 0
+
+  status_tracker_status
+  Fields: 0
+
+  status_tracker_summary
+  Fields: 0
+
+  Status Tracker Report
+  Fields: 0
+
+  PEP_Archives
+  Fields: 0
+
+  JOB_from_PEP_Driver
+  Fields: 0
+
+  main_INVOICES
+  Fields: 0
+
+
+=== TESTING WRITE ACCESS ===
+
+Testing: 2.5-JOB_DETAIL
+  ✓ WRITE ACCESS - Can create records!
+  Record ID: 1167649
+  ** THIS LAYOUT WORKS FOR CREATING JOBS **
+
+Testing: JOBS_ALL_FIELDS
+  ✓ WRITE ACCESS - Can create records!
+  Record ID: 1167650
+  ** THIS LAYOUT WORKS FOR CREATING JOBS **
+
+Testing: Jobs Detail All Fields
+  ✓ WRITE ACCESS - Can create records!
+  Record ID: 1167651
+  ** THIS LAYOUT WORKS FOR CREATING JOBS **
+
+
+=== Inspection Complete ===
