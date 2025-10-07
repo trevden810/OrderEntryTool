@@ -69,22 +69,61 @@ async function searchJob(orderNumber, token) {
 }
 
 async function createTestJob(token) {
+  // UPDATED: Use direct fieldData format (payload wrapper creates ghost records)
   const testJob = {
+    // Core required fields
     job_status: 'Entered',
-    job_type: 'TEST',
+    job_type: 'Delivery',
     client_order_number: `TEST_${Date.now()}`,
     date_received: new Date().toISOString().split('T')[0],
-    product_serial_number: `TEST_SN_${Date.now()}`,
+    due_date: new Date().toISOString().split('T')[0],
+    
+    // Customer info
     Customer_C1: 'Test Customer',
-    address_C1: '123 Test St',
-    zip_C1: '12345'
+    address_C1: '123 Test Street',
+    zip_C1: '84119',
+    phone_C1: '801-555-1234',
+    
+    // Product info
+    product_serial_number: `TEST_SN_${Date.now()}`,
+    description_product: 'Test Equipment',
+    
+    // REQUIRED Foreign Keys
+    _kf_client_code_id: 'TTR-u',
+    _kf_client_id: '1247',
+    _kf_client_class_id: '110.1',
+    _kf_disposition: 'Standard',
+    _kf_notification_id: 'Yes',
+    _kf_market_id: 'Utah',
+    _kf_city_id: 'West Valley City',
+    _kf_state_id: 'UT',
+    
+    // Location
+    location_load: 'PEP',
+    
+    // Job details
+    people_required: 2,
+    oneway_miles: 0,
+    piece_total: 1,
+    
+    // Flags
+    Additional_unit: 'NO',
+    same_day: 'NO',
+    same_day_return: 'NO',
+    staging: 'NO',
+    named_insurance: 'NO',
+    billing_status: 'Initial',
+    
+    // Metadata
+    timestamp_create: new Date().toISOString(),
+    timestamp_mod: new Date().toISOString(),
+    account_create: 'test_api',
+    account_mod: 'test_api'
   };
 
-  // Test with payload wrapper
+  // Use DIRECT fieldData (not payload wrapper)
   const payload = {
-    fieldData: {
-      payload: JSON.stringify(testJob)
-    }
+    fieldData: testJob
   };
 
   const response = await fetch(
@@ -164,36 +203,15 @@ async function runTests() {
     const { response, data, testJob } = await createTestJob(auth.token);
     
     if (response.ok && data.response?.recordId) {
-      log(`✓ Job created successfully`, 'green');
+      log(`✓ Job created successfully with DIRECT fieldData format`, 'green');
       log(`  Record ID: ${data.response.recordId}`, 'reset');
       log(`  Test Order #: ${testJob.client_order_number}`, 'reset');
+      log(`  This record should be usable (not a ghost record)\n`, 'green');
     } else {
       log(`✗ Job creation failed: ${response.status}`, 'red');
-      log(`  Response: ${JSON.stringify(data, null, 2)}`, 'red');
-      
-      // Try alternate format (direct fieldData)
-      log(`\n  Trying alternate format (direct fieldData)...`, 'yellow');
-      const response2 = await fetch(
-        `${BASE_URL}/databases/${CREATE_DB}/layouts/${CREATE_LAYOUT}/records`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${auth.token}`
-          },
-          body: JSON.stringify({ fieldData: testJob })
-        }
-      );
-      const data2 = await response2.json();
-      
-      if (response2.ok && data2.response?.recordId) {
-        log(`  ✓ Alternate format successful!`, 'green');
-        log(`  Record ID: ${data2.response.recordId}`, 'reset');
-        log(`  NOTE: Use direct fieldData format, not payload wrapper\n`, 'yellow');
-      } else {
-        log(`  ✗ Alternate format also failed`, 'red');
-        log(`  Response: ${JSON.stringify(data2, null, 2)}\n`, 'red');
-      }
+      log(`  Code: ${data.messages?.[0]?.code}`, 'red');
+      log(`  Message: ${data.messages?.[0]?.message}`, 'red');
+      log(`  Full Response: ${JSON.stringify(data, null, 2)}\n`, 'red');
     }
     
     await logout(CREATE_DB, auth.token);

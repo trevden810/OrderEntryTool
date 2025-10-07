@@ -1,8 +1,10 @@
 /**
  * Field Mapping Utilities
+ * Maps extracted PDF data to FileMaker fields with proper foreign key handling
  */
 
 import { APP_DEFAULTS } from '../config/filemaker.js';
+import { validateForeignKeys } from '../services/lookupService.js';
 
 /**
  * Convert M/D or MM/DD format to YYYY-MM-DD
@@ -24,10 +26,15 @@ function convertDateToISO(dateStr) {
   return dateStr;
 }
 
+/**
+ * Map extracted PDF data to FileMaker field structure
+ * @param {object} extracted - Raw extracted data from PDF
+ * @returns {object} FileMaker-compatible field data
+ */
 export function mapToFileMakerFields(extracted) {
   const today = new Date().toISOString().split('T')[0];
   
-  return {
+  const mappedData = {
     // Core job fields
     job_status: APP_DEFAULTS.jobStatus,
     job_type: extracted.jobType || 'Delivery',
@@ -95,6 +102,14 @@ export function mapToFileMakerFields(extracted) {
     account_create: 'OrderEntryTool',
     account_mod: 'OrderEntryTool'
   };
+  
+  // Validate that all required foreign keys are present
+  const validation = validateForeignKeys(mappedData);
+  if (!validation.isValid) {
+    console.warn('Foreign key validation warnings:', validation.errors);
+  }
+  
+  return mappedData;
 }
 
 function formatContact(extracted) {
