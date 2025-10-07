@@ -1,0 +1,198 @@
+# Order Entry Tool - Project Status
+
+**Last Updated**: October 7, 2025
+
+## Current Status: BLOCKED - Two Critical Issues
+
+### Issue 1: PDF Extraction Failing for Seko BOL Format
+**Severity**: Critical  
+**Impact**: Only 2 of 15+ fields extracting from Seko BOL
+
+**What's Working:**
+- TTR BOL format (original test PDF): 95% extraction rate
+- Phone number extraction: ✓
+- Job type detection: ✓
+
+**What's Failing:**
+- Order/tracking numbers: Not found
+- Customer name: Not found
+- Address/ZIP/City/State: Not found
+- Serial numbers: Not found
+- Product description: Not found
+
+**Root Cause**: Seko BOL has completely different layout/format than TTR BOL:
+- Multi-page document
+- Table-based layout
+- Different field labels
+- Structured sections vs space-delimited text
+
+**Test File**: Multiple Seko documents uploaded (GEUL1215797)
+
+---
+
+### Issue 2: FileMaker Field Requirements Unclear
+**Severity**: High  
+**Impact**: Cannot create usable job records
+
+**Two Conflicting Approaches:**
+
+#### Payload Wrapper (Currently Active)
+```javascript
+{ fieldData: { payload: JSON.stringify(jobData) } }
+```
+- ✓ Test script succeeds (creates record 14519)
+- ✗ Records may be "ghost" entries (need FM admin to verify)
+- ✗ Data not accessible as individual fields
+
+#### Individual Fields
+```javascript
+{ fieldData: { job_status: "Entered", ... } }
+```
+- ✗ Returns error 102 "Field is missing"
+- Added 8 required fields from DB analysis:
+  - `_kf_client_code_id`, `_kf_client_id`, `_kf_client_class_id`
+  - `_kf_disposition`, `_kf_notification_id`, `_kf_market_id`
+  - `account_mod`, `timestamp_mod`
+- Still fails validation
+
+**Need from FileMaker Admin:**
+1. Verify if payload wrapper creates real, usable records
+2. If not, identify which specific field(s) are missing for individual field approach
+3. Provide field requirements documentation for "table" layout
+
+---
+
+## What's Working
+
+### Authentication & API Connection ✓
+- Both databases authenticate successfully
+- Token management working
+- Proxy handling CORS correctly
+- Search functionality works (found test record)
+
+### PDF Extraction (TTR Format Only) ✓
+Successfully extracts from TTR BOL:
+- Order Number: 734090
+- Tracking Number: 849331
+- Customer: Pacific Office Automation - UT
+- Address: 1325 West 2200 South, Suite B
+- City/State/ZIP: West Valley City, UT 84119
+- Serial Number: ACV7011000467
+- Product: Konica Bizhub 750i
+- Phone: 801-990-4016
+- Job Type: Pickup
+
+---
+
+## Technical Details
+
+### Files Modified (Latest Session)
+1. **src/services/filemakerService.js**
+   - Reverted to payload wrapper format
+   - Added debug logging
+   - Currently using JSON string in "payload" field
+
+2. **src/utils/fieldMappings.js**
+   - Added 6 required foreign key fields
+   - Added `account_mod` and `timestamp_mod`
+   - Removed invalid `call_ahead` field
+   - Total: 45 fields being sent
+
+3. **src/config/filemaker.js**
+   - Added default values for all required fields
+   - Based on TestDelete.xlsx analysis (86 records)
+
+### Test Scripts
+- `test_api.js` - Full connection test ✓ PASSING
+- `test-minimal.js` - Minimal field test (created)
+
+### Database Analysis
+- **Source**: TestDelete.xlsx (86 valid records, 168 columns)
+- **100% Populated Fields**: 27 identified
+- **Foreign Keys**: Accept string values (city names, state codes, client codes)
+- **Common Values**: TTR-u (client), Utah (market), Standard (disposition)
+
+---
+
+## Next Steps
+
+### Priority 1: Fix PDF Extraction for Seko Format
+**Options:**
+1. Enhance extraction patterns to handle Seko layout
+2. Implement OCR for table-based PDFs
+3. Add format detection to use appropriate extraction method
+4. Manual entry fallback with better UI for missing fields
+
+**Recommendation**: Implement format detection + targeted extraction for Seko tables
+
+### Priority 2: Resolve FileMaker Field Issue
+**Required Actions:**
+1. Contact FileMaker admin to verify record 14519 contains usable data
+2. If payload wrapper doesn't work, get exact field requirements for "table" layout
+3. Consider using different layout designed for API imports
+
+### Priority 3: Improve Validation & Error Handling
+- Show which specific fields failed extraction
+- Allow manual correction before submit
+- Better error messages from FileMaker API
+
+---
+
+## Environment
+
+### Configuration (.env)
+```
+VITE_FILEMAKER_USERNAME=trevor_api
+VITE_FILEMAKER_PASSWORD=XcScS2yRoTtMo7
+VITE_FILEMAKER_BASE_URL=https://modd.mainspringhost.com
+VITE_FILEMAKER_SEARCH_DB=PEP2_1
+VITE_FILEMAKER_CREATE_DB=pep-move-api
+VITE_FILEMAKER_SEARCH_LAYOUT=jobs_api
+VITE_FILEMAKER_CREATE_LAYOUT=table
+```
+
+### Dev Server
+```bash
+npm run dev  # http://localhost:3000
+```
+
+### Test Commands
+```bash
+node test_api.js       # Full API test
+node test-minimal.js   # Minimal field test
+```
+
+---
+
+## Documentation Files
+- `FIELD_MAPPING.md` - Complete field reference from TestDelete.xlsx
+- `FILEMAKER_ANALYSIS.md` - Database structure analysis
+- `TESTING.md` - Testing procedures
+- `QUICKSTART.md` - Setup instructions
+- `ROADMAP.md` - Feature planning
+
+---
+
+## Recommendations
+
+### Short Term
+1. Get FileMaker admin to verify if payload wrapper creates usable records
+2. If yes, continue with payload wrapper approach
+3. If no, get detailed field requirements for individual field format
+
+### Medium Term
+1. Implement multi-format PDF extraction (TTR vs Seko vs others)
+2. Add format auto-detection
+3. Improve validation UI to catch missing data before submit
+
+### Long Term
+1. Request dedicated API layout from FileMaker admin with clear field requirements
+2. Implement OCR fallback for poor-quality PDFs
+3. Add job status tracking (created, in-progress, completed)
+
+---
+
+## Contact FileMaker Admin With:
+1. Question: "Does record 14519 contain usable job data, or is the payload field just storing JSON?"
+2. If not usable: "What are the exact required fields for layout 'table' in database 'pep-move-api'?"
+3. Request: Field requirements documentation for API imports
