@@ -125,6 +125,50 @@ export const EXTRACTION_PATTERNS = {
     /pickup|pick\s*up|collect|retrieve/gi
   ],
   
+  // Scheduling information
+  schedulingInfo: [
+    /(?:pickup|delivery)\s+(?:during|for|on)\s+(?:the\s+)?(?:next\s+)?([A-Za-z\s]+run)/gi,
+    /(?:this\s+will\s+go\s+on\s+the)\s+([A-Za-z\s]+transfer)/gi,
+    /(?:run|transfer)\s*[:\-]?\s*([A-Za-z0-9\s]+)/gi
+  ],
+
+  // Origin contacts
+  originContacts: [
+    /(?:origin\s*contacts?|contacts?)\s*[:\-]?\s*([A-Z][a-z]+\s+[A-Z][a-z]+.*?)(?=\n\n|\n[A-Z]|\$)/gi,
+    /([A-Z][a-z]+\s+[A-Z][a-z]+)\s*\((\d{3}[-.\s]?\d{3}[-.\s]?\d{4})\)\s*([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/gi
+  ],
+
+  // Origin notes/special instructions
+  originNotes: [
+    /(?:origin\s*notes?|notes?|instructions?|special\s*instructions?)\s*[:\-]?\s*([A-Za-z0-9\s\-\.,\(\):\/]+?)(?=\n\n|\n[A-Z]|\$)/gi,
+    /(\d{1,2}-hour\s+pre-call\s+requested)/gi,
+    /(park\s+in\s+(?:back|front)\s+by\s+DOOR\s+[A-Z])/gi,
+    /(back\s+up\s+to\s+the\s+double\s+doors)/gi,
+    /(liftgate\s+needed|no\s+dock|no\s+steps)/gi,
+    /(?:hours?)\s*[:\-]?\s*(?:Monday-Friday|Mon-Fri|Mon\s*-\s*Fri)\s+(\d{1,2}(?::\d{2})?\s*(?:AM|PM))\s*-\s*(\d{1,2}(?::\d{2})?\s*(?:AM|PM))/gi
+  ],
+
+  // Pricing information
+  pricing: [
+    /\$\s*(\d{1,5}(?:\.\d{2})?)/g,
+    /(?:price|cost|amount|charge)\s*[:\-]?\s*\$?\s*(\d{1,5}(?:\.\d{2})?)/gi
+  ],
+
+  // Service requirements
+  serviceRequirements: [
+    /(?:liftgate|lift\s+gate)\s+(?:needed|required|requested)/gi,
+    /(?:dock|loading\s+dock)\s+(?:needed|required|available|not\s+available)/gi,
+    /(?:steps|stairs)\s+(?:none|no\s+steps|\d+\s+steps)/gi,
+    /(?:pre[-\s]?call|call\s+ahead)\s+(?:required|requested|\d+\s+(?:hour|hr|min)s?\s+(?:prior|ahead))/gi
+  ],
+
+  // Location instructions
+  locationInstructions: [
+    /(?:park\s+(?:in|at)\s+(?:back|front|side))/gi,
+    /(?:door|entrance)\s+([A-Z])/gi,
+    /(?:back\s+up\s+to|pull\s+up\s+to)/gi
+  ],
+
   // Client identifiers
   clientTTR: [
     /ttr/gi,

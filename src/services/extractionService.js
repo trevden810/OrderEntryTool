@@ -103,6 +103,25 @@ export function extractDataFromText(text) {
   
   const callAheadMatches = extractAllMatches(text, EXTRACTION_PATTERNS.callAhead);
   data.callAhead = callAheadMatches[0] || '';
+  // Extract new scheduling and pricing fields
+  const schedulingMatches = extractAllMatches(text, EXTRACTION_PATTERNS.schedulingInfo);
+  data.schedulingInfo = schedulingMatches[0] || '';
+  
+  const originContactMatches = extractAllMatches(text, EXTRACTION_PATTERNS.originContacts);
+  data.originContacts = originContactMatches[0] || '';
+  
+  const originNotesMatches = extractAllMatches(text, EXTRACTION_PATTERNS.originNotes);
+  data.originNotes = originNotesMatches.join('; ') || '';
+  
+  const pricingMatches = extractAllMatches(text, EXTRACTION_PATTERNS.pricing);
+  data.pricing = pricingMatches[0] || '';
+  
+  const serviceReqMatches = extractAllMatches(text, EXTRACTION_PATTERNS.serviceRequirements);
+  data.serviceRequirements = serviceReqMatches.join('; ') || '';
+  
+  const locationInstrMatches = extractAllMatches(text, EXTRACTION_PATTERNS.locationInstructions);
+  data.locationInstructions = locationInstrMatches.join('; ') || '';
+  
   
   data.jobType = detectJobTypeFromDates(text);
   data.clientType = detectClient(text);

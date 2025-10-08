@@ -182,6 +182,51 @@ export default function ReviewForm({ extractedData, onBack }) {
             className="col-span-2"
             multiline
           />
+          <FormField
+            label="Scheduling Info"
+            name="scheduling_info"
+            value={jobData.scheduling_info}
+            onChange={(v) => handleChange('scheduling_info', v)}
+            className="col-span-2"
+          />
+          <FormField
+            label="Origin Contacts"
+            name="origin_contacts"
+            value={jobData.origin_contacts}
+            onChange={(v) => handleChange('origin_contacts', v)}
+            className="col-span-2"
+          />
+          <FormField
+            label="Origin Notes"
+            name="origin_notes"
+            value={jobData.origin_notes}
+            onChange={(v) => handleChange('origin_notes', v)}
+            className="col-span-2"
+            multiline
+          />
+          <FormField
+            label="Pricing Amount"
+            name="pricing_amount"
+            value={jobData.pricing_amount}
+            onChange={(v) => handleChange('pricing_amount', v)}
+          />
+          <FormField
+            label="Service Requirements"
+            name="service_requirements"
+            value={jobData.service_requirements}
+            onChange={(v) => handleChange('service_requirements', v)}
+            className="col-span-2"
+            multiline
+          />
+          <FormField
+            label="Location Instructions"
+            name="location_instructions"
+            value={jobData.location_instructions}
+            onChange={(v) => handleChange('location_instructions', v)}
+            className="col-span-2"
+            multiline
+          />
+        </div>
         </div>
 
         {/* Submit Button */}

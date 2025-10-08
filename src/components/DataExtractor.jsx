@@ -164,6 +164,12 @@ export default function DataExtractor({ file, onDataExtracted, onBack }) {
               <DataField label="Phone" value={extractedData.phone} />
               <DataField label="Job Type" value={extractedData.jobType} />
               <DataField label="Product" value={extractedData.productDescription} />
+              <DataField label="Scheduling Info" value={extractedData.schedulingInfo} />
+              <DataField label="Origin Contacts" value={extractedData.originContacts} />
+              <DataField label="Origin Notes" value={extractedData.originNotes} />
+              <DataField label="Pricing" value={extractedData.pricing} />
+              <DataField label="Service Requirements" value={extractedData.serviceRequirements} />
+              <DataField label="Location Instructions" value={extractedData.locationInstructions} />
             </div>
 
             <div className="flex gap-4">

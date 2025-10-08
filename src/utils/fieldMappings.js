@@ -78,6 +78,14 @@ export function mapToFileMakerFields(extracted) {
     notes_call_ahead: extracted.callAhead || '',
     notes_driver: extracted.driverNotes || '',
     notes_job: extracted.jobNotes || '',
+    // New scheduling and pricing fields
+    scheduling_info: extracted.schedulingInfo || '',
+    origin_contacts: extracted.originContacts || '',
+    origin_notes: extracted.originNotes || '',
+    pricing_amount: extracted.pricing || '',
+    service_requirements: extracted.serviceRequirements || '',
+    location_instructions: extracted.locationInstructions || '',
+    
     notes_schedule: extracted.scheduleNotes || '',
     
     // Job details
