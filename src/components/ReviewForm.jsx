@@ -227,7 +227,6 @@ export default function ReviewForm({ extractedData, onBack }) {
             multiline
           />
         </div>
-        </div>
 
         {/* Submit Button */}
         <div className="flex gap-4">
